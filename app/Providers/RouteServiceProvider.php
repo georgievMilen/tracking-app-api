@@ -37,7 +37,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
+        $this->registerPublicRoute('accounts.php');
         $this->registerPublicRoute('categories.php');
+        $this->registerPublicRoute('transactions.php');
     }
 
     private function registerPublicRoute(string $path): void

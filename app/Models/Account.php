@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ActiveScope;
 use App\Models\Traits\UUIDPrimary;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,8 +13,7 @@ class Account extends Model
 {
     use SoftDeletes,
         UUIDPrimary,
-        HasFactory,
-        ActiveScope;
+        HasFactory;
 
     protected $table = 'accounts';
 
@@ -31,7 +29,6 @@ class Account extends Model
     ];
 
     protected $casts = [
-        'active'           => 'boolean',
         'in_total_balance' => 'boolean',
         'balance'          => 'integer',
     ];

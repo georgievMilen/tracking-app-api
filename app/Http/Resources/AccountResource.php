@@ -25,7 +25,6 @@ class AccountResource extends JsonResource
             'balance'          => $this->balance,
             'color'            => $this->color,
             'currency'         => new CurrencyResource($this->currency),
-            'active'           => $this->active,
             'in_total_balance' => $this->in_total_balance,
         ];
     }

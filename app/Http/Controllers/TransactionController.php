@@ -16,17 +16,18 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
     public function list(Request $request): AnonymousResourceCollection
     {
-        $transactions = Transaction::query();
+        $query = Transaction::query();
         if($request->filled('type')) {
-            $transactions->where('type', $request->input('type'));
+            $query->type($request->input('type'));
         }
 
-        return TransactionResource::collection(Transaction::get())->additional(['message' => 'Transaction resource']);
+        return TransactionResource::collection($query->get())->additional(['message' => 'Transaction resource']);
     }
 
     public function get(string $uuid): TransactionResource
@@ -40,14 +41,14 @@ class TransactionController extends Controller
 
         $accountService = new AccountService($account);
 
-        if (TransactionService::isExpenseType($this->request->input('type'))) {
-            if ($accountService->balanceNotEnough($this->request->input('amount'))) {
+        if (TransactionService::isExpenseType($request->input('type'))) {
+            if ($accountService->balanceNotEnough($request->input('amount'))) {
                 APIResponse::fail('Account balance is less than the required amount', 400);
             }
 
-            $accountService->reduceAccountBalance($this->request->input('amount'));
+            $accountService->reduceAccountBalance($request->input('amount'));
         } else {
-            $accountService->increaseAccountBalance($this->request->input('amount'));
+            $accountService->increaseAccountBalance($request->input('amount'));
         }
 
         Transaction::create([
@@ -77,14 +78,14 @@ class TransactionController extends Controller
             $accountService->reduceAccountBalance($transaction->amount);
         }
 
-        if (TransactionService::isExpenseType($this->request->input('type'))) {
-            if ($accountService->balanceNotEnough($this->request->input('amount'))) {
+        if (TransactionService::isExpenseType($request->input('type'))) {
+            if ($accountService->balanceNotEnough($request->input('amount'))) {
                 APIResponse::fail('Account balance is less than the required amount', 400);
             }
 
-            $accountService->reduceAccountBalance($this->request->input('amount'));
+            $accountService->reduceAccountBalance($request->input('amount'));
         } else {
-            $accountService->increaseAccountBalance($this->request->input('amount'));
+            $accountService->increaseAccountBalance($request->input('amount'));
         }
 
         $transaction->update([

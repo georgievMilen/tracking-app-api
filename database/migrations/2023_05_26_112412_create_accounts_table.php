@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('color');
 
             $table->unsignedBigInteger('currency_id');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('CASCADE')->onDelete('CASCADE');
 
             $table->boolean('in_total_balance')->default(1);
 

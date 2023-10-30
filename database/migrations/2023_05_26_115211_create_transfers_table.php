@@ -15,10 +15,10 @@ return new class extends Migration {
             $table->string('uuid')->unique();
 
             $table->unsignedBigInteger('from_account_id');
-            $table->foreign('from_account_id')->references('id')->on('accounts')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('from_account_id')->references('id')->on('accounts')->onUpdate('CASCADE')->onDelete('CASCADE');
 
             $table->unsignedBigInteger('to_account_id');
-            $table->foreign('to_account_id')->references('id')->on('accounts')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('to_account_id')->references('id')->on('accounts')->onUpdate('CASCADE')->onDelete('CASCADE');
 
             $table->integer('amount');
             $table->text('comment')->nullable();

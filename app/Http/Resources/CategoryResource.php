@@ -24,6 +24,7 @@ class CategoryResource extends JsonResource
             'name'             => $this->name,
             'type'             => $this->type,
             'color'            => $this->color,
+            'total_amount'     => $this->getTotalAmount()
         ];
     }
 }

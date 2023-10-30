@@ -2,9 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\CategoryTypeEnum;
 use App\Models\Account;
-use App\Models\Category;
 use App\Models\Currency;
 use App\Services\ColorService;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +22,7 @@ class AccountFactory extends Factory
         return [
             'name'    => fake()->word(),
             'balance' => $this->faker->numberBetween(1000, 100000),
-            'currency_id' => Currency::getCurrencyByCode('BGN'),
+            'currency_id' => Currency::getCurrencyByCode('BGN')->id,
             'color'   => '#' . ColorService::randomColor(),
         ];
     }

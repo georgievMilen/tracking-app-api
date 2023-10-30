@@ -11,12 +11,18 @@ use App\Models\Currency;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
-    public function list(): AnonymousResourceCollection
+    public function list(Request $request): AnonymousResourceCollection
     {
-        return CategoryResource::collection(Category::all())->additional(['message' => 'Category resource']);
+        $query = Category::query();
+        if($request->filled('type')) {
+            $query->type($request->input('type'));
+        }
+
+        return CategoryResource::collection($query->get())->additional(['message' => 'Category resource']);
     }
 
     public function get(string $uuid): CategoryResource
@@ -50,7 +56,9 @@ class CategoryController extends Controller
 
     public function delete(string $uuid): JsonResponse
     {
-        Category::getByUUID($uuid)->delete();
+        $category = Category::getByUUID($uuid);
+
+        $category->delete();
 
         return APIResponse::success('Category successfully deleted')->json();
     }

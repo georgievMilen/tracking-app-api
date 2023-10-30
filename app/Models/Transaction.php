@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ActiveScope;
 use App\Models\Traits\UUIDPrimary;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
     use SoftDeletes,
+        HasFactory,
         UUIDPrimary;
 
     protected $table = 'transactions';
@@ -29,7 +29,7 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'amount'           => 'integer',
+        'amount' => 'integer',
     ];
 
     /**
@@ -40,13 +40,18 @@ class Transaction extends Model
         return $this->belongsTo(Account::class);
     }
 
-    public function category(): HasOne
+    public function category(): BelongsTo
     {
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public static function scopeType(Builder $query, string $type): Builder
+    {
+        return $query->where('type', $type);
     }
 }

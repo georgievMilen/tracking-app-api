@@ -14,7 +14,7 @@ class AccountController extends Controller
 {
     public function list(): AnonymousResourceCollection
     {
-        return AccountResource::collection(Account::active()->get())->additional(['message' => 'Account resource']);
+        return AccountResource::collection(Account::get())->additional(['message' => 'Account resource']);
     }
 
     public function get(string $uuid): AccountResource
