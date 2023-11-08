@@ -33,6 +33,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
+            $this->registerAuthRoute('auth.php');
+            
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
@@ -40,6 +42,11 @@ class RouteServiceProvider extends ServiceProvider
         $this->registerPublicRoute('accounts.php');
         $this->registerPublicRoute('categories.php');
         $this->registerPublicRoute('transactions.php');
+    }
+    private function registerAuthRoute(string $path): void
+    {
+        Route::middleware('api')
+                ->group(base_path('routes/' . $path));
     }
 
     private function registerPublicRoute(string $path): void
